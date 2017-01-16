@@ -1,0 +1,82 @@
+<ion-header>
+    <ion-navbar>
+        <ion-segment [(ngModel)]="segment">
+            <ion-segment-button value="all">
+                All
+            </ion-segment-button>
+            <ion-segment-button value="favorites">
+                Favorites
+            </ion-segment-button>
+        </ion-segment>
+
+        <!--<ion-buttons end>-->
+        <!--<button ion-button icon-only (click)="presentFilter()">-->
+        <!--<ion-icon ios="ios-options-outline" md="md-options"></ion-icon>-->
+        <!--</button>-->
+        <!--</ion-buttons>-->
+    </ion-navbar>
+
+    <ion-toolbar no-border-top>
+        <ion-searchbar color="primary"
+                       [(ngModel)]="keyword"
+                       (ionInput)="search()"
+                       placeholder="Search">
+        </ion-searchbar>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-list>
+
+        <ion-item-group *ngFor="let item of result">
+
+            <ion-item-divider sticky>
+                <ion-label>
+                    {{item._id}}
+                </ion-label>
+            </ion-item-divider>
+
+            <ion-item-sliding *ngFor="let sound of item.albumArray" #slidingItem>
+
+                <button ion-item (click)="getSoundTracks(sound, item._id)">
+                    <h3>{{sound.title}}</h3>
+                    <p>
+                        {{sound.date}} &mdash;
+                        {{sound.playCount}}:
+                        <!--{{session.location}}-->
+                    </p>
+                </button>
+
+                <!--<ion-item-options>-->
+                <!--<button ion-button color="favorite" (click)="addFavorite(slidingItem, session)" *ngIf="segment === 'all'">-->
+                <!--Favorite-->
+                <!--</button>-->
+                <!--<button ion-button color="danger" (click)="removeFavorite(slidingItem, session, 'Remove Favorite')" *ngIf="segment === 'favorites'">-->
+                <!--Remove-->
+                <!--</button>-->
+                <!--</ion-item-options>-->
+
+            </ion-item-sliding>
+        </ion-item-group>
+    </ion-list>
+
+    <ion-fab bottom right #fab>
+        <button ion-fab>
+            <ion-icon name="share"></ion-icon>
+        </button>
+        <ion-fab-list side="top">
+            <button ion-fab color="vimeo">
+                <ion-icon name="logo-vimeo"></ion-icon>
+            </button>
+            <button ion-fab color="google">
+                <ion-icon name="logo-googleplus"></ion-icon>
+            </button>
+            <button ion-fab color="twitter">
+                <ion-icon name="logo-twitter"></ion-icon>
+            </button>
+            <button ion-fab color="facebook">
+                <ion-icon name="logo-facebook"></ion-icon>
+            </button>
+        </ion-fab-list>
+    </ion-fab>
+</ion-content>

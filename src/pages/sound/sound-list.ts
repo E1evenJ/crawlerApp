@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
 import {NavController, NavParams} from "ionic-angular";
-import {SocketService} from "../../common/socket.service";
-import {SoundModalService} from "../../common/sound-modal.service";
+import {SocketService} from "../../services/socket.service";
+import {SoundModalService} from "../../services/sound-modal.service";
 
 @Component({
     selector: 'page-sound-list',

@@ -3,9 +3,9 @@ import {Platform} from 'ionic-angular';
 import {StatusBar, Splashscreen} from 'ionic-native';
 
 import {TabsPage} from '../pages/tabs/tabs';
-import {SocketService} from "../common/socket.service";
+import {SocketService} from "../services/socket.service";
 import {HomePage} from "../pages/home/home";
-import {SoundModalService} from "../common/sound-modal.service";
+import {SoundModalService} from "../services/sound-modal.service";
 
 
 @Component({

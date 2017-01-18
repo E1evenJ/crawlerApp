@@ -6,6 +6,8 @@ import {ContactPage} from '../pages/contact/contact';
 import {HomePage} from '../pages/home/home';
 import {TabsPage} from '../pages/tabs/tabs';
 import {SoundModalPage} from "../pages/home/sound.modal";
+import {SoundList} from "../pages/sound/sound-list";
+import {SoundBar} from "../pages/sound-bar/sound-bar";
 
 @NgModule({
     declarations: [
@@ -14,7 +16,9 @@ import {SoundModalPage} from "../pages/home/sound.modal";
         ContactPage,
         HomePage,
         TabsPage,
-        SoundModalPage
+        SoundModalPage,
+        SoundList,
+        SoundBar
     ],
     imports: [
         IonicModule.forRoot(MyApp)
@@ -26,7 +30,9 @@ import {SoundModalPage} from "../pages/home/sound.modal";
         ContactPage,
         HomePage,
         TabsPage,
-        SoundModalPage
+        SoundModalPage,
+        SoundList,
+        SoundBar
     ],
     providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })

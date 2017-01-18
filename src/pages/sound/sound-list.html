@@ -1,0 +1,22 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Sound-List</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="cambio-ion-content">
+    <ion-list>
+        <ion-item-sliding *ngFor="let sound of album.soundArray" #slidingItem>
+            <button ion-item (click)="getSoundTracks(sound)">
+                <ion-thumbnail item-left>
+                    <img src="{{album.picture}}">
+                </ion-thumbnail>
+                <h3>{{sound.title}}</h3>
+                <p>
+                    {{sound.date}}:
+                    {{sound.playCount}}
+                </p>
+            </button>
+        </ion-item-sliding>
+    </ion-list>
+</ion-content>

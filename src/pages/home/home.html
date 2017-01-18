@@ -25,7 +25,7 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content class="cambio-ion-content">
     <ion-list>
 
         <ion-item-group *ngFor="let item of result">
@@ -36,14 +36,25 @@
                 </ion-label>
             </ion-item-divider>
 
-            <ion-item-sliding *ngFor="let sound of item.albumArray" #slidingItem>
-
-                <button ion-item (click)="getSoundTracks(sound, item._id)">
-                    <h3>{{sound.title}}</h3>
+            <ion-item-sliding *ngFor="let album of item.albumArray" #slidingItem>
+                <button ion-item *ngIf="album.isAlbum == true" (click)="goToSoundList(album, item._id)">
+                    <ion-thumbnail item-left>
+                        <img src="{{album.picture}}">
+                    </ion-thumbnail>
+                    <h3><span>[专辑]</span>{{album.name}}</h3>
                     <p>
-                        {{sound.date}} &mdash;
-                        {{sound.playCount}}:
-                        <!--{{session.location}}-->
+                        {{album.date}}:
+                        {{album.playCount}}:
+                        {{album.length}}
+                    </p>
+                </button>
+                <button ion-item *ngIf="album.isAlbum == false" (click)="getSoundTracks(album.soundArray[0], item._id)">
+                    <ion-thumbnail item-left>
+                        <img src="{{album.soundArray[0].picture}}">
+                    </ion-thumbnail>
+                    <h3>{{album.soundArray[0].title}}</h3>
+                    <p>
+                        {{album.soundArray[0].playCount}}
                     </p>
                 </button>
 

@@ -1,0 +1,16 @@
+<ion-content [hidden]="!isShow" style="z-index: 10;">
+    <ion-buttons start>
+        <button ion-button clear icon-only (click)="closeSoundBar()">
+            Close
+        </button>
+    </ion-buttons>
+    <ion-list>
+        <audio controls src="{{soundData['play_path']}}"></audio>
+    </ion-list>
+</ion-content>
+
+<ion-footer [hidden]="isShow">
+    <ion-toolbar>
+        <button ion-button clear full (click)="openSoundBar()">音乐</button>
+    </ion-toolbar>
+</ion-footer>

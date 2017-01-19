@@ -23,6 +23,9 @@ export class HomePage {
     }
 
     search() {
+        if(this.keyword == ''){
+            return ;
+        }
         const that = this;
         clearTimeout(this.timeoutValue);
         this.timeoutValue = setTimeout(() => {
@@ -34,7 +37,7 @@ export class HomePage {
 
         function searchResultFun(body: any, jwr: any) {
             console.log(body);
-            that.result = body.results;
+            that.result = body && body.results;
         }
 
         // this.http.get('http://localhost:1338/cambio/Crawler/search' + '?keyword=' + this.keyword)

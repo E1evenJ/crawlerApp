@@ -1,4 +1,4 @@
-import {Component, ViewChild, ChangeDetectorRef} from '@angular/core';
+import {Component, ViewChild, ChangeDetectorRef, OnInit} from '@angular/core';
 
 import {Events, Content} from "ionic-angular";
 
@@ -6,20 +6,36 @@ import {Events, Content} from "ionic-angular";
     selector: 'page-sound-bar',
     templateUrl: 'sound-bar.html'
 })
-export class SoundBar {
+export class SoundBar implements OnInit{
+
     isShow: boolean = false;
     soundData: any = {};
+    audioEle;
+    isPlay:boolean = false;
 
     @ViewChild(Content) content: Content;
 
-    constructor(public chRef: ChangeDetectorRef,
-                public events: Events) {
+    ngOnInit(): void {
         const _this = this;
+        _this.audioEle = _this.content.getNativeElement().parentNode.querySelector('audio');
+        _this.audioEle.addEventListener('play',()=>{
+            _this.isPlay = true;
+        });
+        _this.audioEle.addEventListener('pause',()=>{
+            _this.isPlay = false;
+        });
         this.events.subscribe('audio:start', (data) => {
             _this.soundData = data;
-            chRef.detectChanges();
-                _this.content.getNativeElement().parentNode.querySelector('audio').play();
+            _this.chRef.detectChanges();
+
+            _this.audioEle.play();
+            _this.isPlay = true;
         });
+    }
+
+    constructor(public chRef: ChangeDetectorRef,
+                public events: Events) {
+
     }
 
     openSoundBar() {
@@ -30,15 +46,14 @@ export class SoundBar {
         this.isShow = false;
     }
 
-
+    play($event, player){
+        $event.stopPropagation();
+        if(player.paused){
+            player.play();
+            this.isPlay = true;
+        }else{
+            player.pause();
+            this.isPlay = false;
+        }
+    }
 }
-
-// import {Directive, Input, ViewContainerRef, TemplateRef} from '@angular/core';
-//
-// @Directive({ selector: '[sound-bar]' })
-// export class SoundBar {
-//     constructor(private templateRef: TemplateRef<any>,
-//                 private viewContainer: ViewContainerRef){
-//
-//     }
-// }

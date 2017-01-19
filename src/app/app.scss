@@ -16,16 +16,28 @@
 
 .platform-android {
     .cambio-ion-content {
+        .fixed-content {
+            margin-bottom: 72px !important;
+        }
         .scroll-content {
-            margin-bottom: 61px !important;
+            margin-bottom: 72px !important;
         }
     }
 }
 
 .platform-ios {
     .cambio-ion-content {
+        .fixed-content {
+            margin-bottom: 65px !important;
+        }
         .scroll-content {
-            margin-bottom: 63px !important;
+            margin-bottom: 65px !important;
         }
     }
+}
+
+.text-ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

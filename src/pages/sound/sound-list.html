@@ -4,17 +4,21 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content class="cambio-ion-content">
+<ion-content cmHasFooter>
     <ion-list>
         <ion-item-sliding *ngFor="let sound of album.soundArray" #slidingItem>
             <button ion-item (click)="getSoundTracks(sound)">
                 <ion-thumbnail item-left>
-                    <img src="{{album.picture}}">
+                    <img src="{{sound.picture}}">
                 </ion-thumbnail>
-                <h3>{{sound.title}}</h3>
+                <h3 class="text-ellipsis">
+                    <span *ngIf="sound.isPaid && sound.isFree">[试听]</span>
+                    <span *ngIf="sound.isPaid && !sound.isFree">[收费]</span>
+                    {{sound.title}}
+                </h3>
                 <p>
-                    {{sound.date}}:
-                    {{sound.playCount}}
+                    {{sound.date}}&nbsp;·
+                    {{sound.playCount}}次播放
                 </p>
             </button>
         </ion-item-sliding>

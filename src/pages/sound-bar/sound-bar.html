@@ -1,16 +1,35 @@
-<ion-content [hidden]="!isShow" style="z-index: 10;">
-    <ion-buttons start>
+<ion-content [hidden]="!isShow" >
+    <div class="cm-header">
         <button ion-button clear icon-only (click)="closeSoundBar()">
-            Close
+            <ion-icon name="arrow-down"></ion-icon>
         </button>
-    </ion-buttons>
+        <div class="cm-title">
+            <div>{{soundData.album_title}}</div>
+        </div>
+    </div>
     <ion-list>
-        <audio controls src="{{soundData['play_path']}}"></audio>
+        <cm-audio [src]="soundData['play_path']" #player></cm-audio>
     </ion-list>
 </ion-content>
 
-<ion-footer [hidden]="isShow">
+<ion-footer [hidden]="isShow" (click)="openSoundBar()">
     <ion-toolbar>
-        <button ion-button clear full (click)="openSoundBar()">音乐</button>
+        <ion-item no-lines>
+            <ion-avatar item-left>
+                <img src="{{soundData['cover_url_142']}}">
+            </ion-avatar>
+            <h3 class="text-ellipsis">{{soundData.title}}</h3>
+            <p>
+                {{soundData.album_title}}&nbsp;·
+                {{soundData.nickname}}
+            </p>
+            <button ion-button clear item-right icon-only (click)="play($event, player)">
+                <ion-icon name="play" *ngIf="!isPlay"></ion-icon>
+                <ion-icon name="pause" *ngIf="isPlay"></ion-icon>
+
+            </button>
+        </ion-item>
+
+
     </ion-toolbar>
 </ion-footer>

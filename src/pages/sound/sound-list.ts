@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, trigger, state, style, transition, animate} from "@angular/core";
 import {NavController, NavParams, AlertController} from "ionic-angular";
 import {SocketService} from "../../services/socket.service";
 import {SoundModalService} from "../../services/sound-modal.service";
@@ -6,10 +6,28 @@ import {CrawlerId} from "../../pipes/crawlerId.pipe";
 
 @Component({
     selector: 'page-sound-list',
-    templateUrl: 'sound-list.html'
+    templateUrl: 'sound-list.html',
+    animations: [
+        trigger('flyInOut', [
+            state('in', style({opacity: 1, transform: 'translateX(0)'})),
+            transition('void => *', [
+                style({
+                    opacity: 0,
+                    transform: 'translateX(-100%)'
+                }),
+                animate('0.5s 100 ease-in')
+            ]),
+            transition('* => void', [
+                animate('0.5s 100 ease-out', style({
+                    opacity: 0,
+                    transform: 'translateX(100%)'
+                }))
+            ])
+        ])
+    ]
 })
 export class SoundList {
-    album;
+    album = {nextUrl: '', hasNext: false, soundArray:[]};
     crawlerId;
 
     constructor(public navCtrl: NavController,
@@ -17,9 +35,16 @@ export class SoundList {
                 public socketService: SocketService,
                 public soundModalService: SoundModalService,
                 private alertCtrl: AlertController,
-    private crawler: CrawlerId) {
-        this.album = this.params.get('album');
+                private crawler: CrawlerId) {
+
         this.crawlerId = this.params.get('crawlerId');
+        const that = this;
+        this.getSoundList(this.params.get('url')).then((body: any) => {
+            that.album.soundArray = that.album.soundArray.concat(body.soundArray);
+            that.album.nextUrl = body.nextUrl;
+            that.album.hasNext = body.hasNext;
+            console.log(that.album);
+        });
     }
 
     getSoundTracks(sound) {
@@ -50,10 +75,29 @@ export class SoundList {
             that.socketService.get('/cambio/Crawler/getSoundTracks', {
                 soundId: sound.id,
                 crawlerId: that.crawlerId
-            }, function (body: any, jwr: any) {
+            }).then((body: any) => {
                 console.log(body);
                 that.soundModalService.setData(body);
             });
         }
+    }
+
+    doInfinite($event) {
+        const that = this;
+        this.getSoundList(that.album.nextUrl).then((body: any) => {
+            console.log(body);
+            that.album.soundArray = that.album.soundArray.concat(body.soundArray);
+            that.album.nextUrl = body.nextUrl;
+            that.album.hasNext = body.hasNext;
+            $event.complete();
+            $event.enable(that.album.hasNext);
+        });
+    }
+
+    getSoundList(url) {
+        return this.socketService.get('/cambio/Crawler/getSoundList', {
+            url: url,
+            crawlerId: this.crawlerId
+        });
     }
 }

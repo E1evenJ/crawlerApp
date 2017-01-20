@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, trigger, state, style, transition, animate, ChangeDetectorRef} from '@angular/core';
 
 import {NavController} from 'ionic-angular';
 import {SoundList} from "../sound/sound-list";
@@ -7,10 +7,28 @@ import {SoundModalService} from "../../services/sound-modal.service";
 
 @Component({
     selector: 'page-home',
-    templateUrl: 'home.html'
+    templateUrl: 'home.html',
+    animations: [
+        trigger('flyInOut', [
+            state('in', style({opacity: 1, transform: 'translateX(0)'})),
+            transition('void => *', [
+                style({
+                    opacity: 0,
+                    transform: 'translateX(-100%)'
+                }),
+                animate('0.5s 100 ease-in')
+            ]),
+            transition('* => void', [
+                animate('0.5s 100 ease-out', style({
+                    opacity: 0,
+                    transform: 'translateX(100%)'
+                }))
+            ])
+        ])
+    ]
 })
 export class HomePage {
-    result: any;
+    albumArray: any;
     keyword: string = '';
 
     timeoutValue: any;
@@ -18,13 +36,14 @@ export class HomePage {
 
     constructor(public navCtrl: NavController,
                 public socketService: SocketService,
-                public soundModalService: SoundModalService) {
+                public soundModalService: SoundModalService,
+                public chRef: ChangeDetectorRef) {
 
     }
 
     search() {
-        if(this.keyword == ''){
-            return ;
+        if (this.keyword == '') {
+            return;
         }
         const that = this;
         clearTimeout(this.timeoutValue);
@@ -32,13 +51,11 @@ export class HomePage {
             console.log('search');
             this.socketService.get('/cambio/Crawler/search', {
                 keyword: this.keyword
-            }, searchResultFun);
+            }).then((body: any) => {
+                console.log(body);
+                that.albumArray = body && body.albumArray;
+            });
         }, 2000);
-
-        function searchResultFun(body: any, jwr: any) {
-            console.log(body);
-            that.result = body && body.results;
-        }
 
         // this.http.get('http://localhost:1338/cambio/Crawler/search' + '?keyword=' + this.keyword)
         //     .subscribe((res: Response) => {
@@ -47,11 +64,11 @@ export class HomePage {
         //     })
     }
 
-    getSoundTracks(sound, crawlerId) {
+    getSoundTracks(album) {
         let _this = this;
         _this.socketService.socket.get('/cambio/Crawler/getSoundTracks', {
-            soundId: sound.id,
-            crawlerId: crawlerId
+            soundId: album.soundArray[0].id,
+            crawlerId: album.crawlerId
         }, function (body: any, jwr: any) {
             console.log(body);
             // let modal = _this.modalCtrl.create(SoundModalPage, body);
@@ -62,7 +79,7 @@ export class HomePage {
 
     goToSoundList(album, crawlerId) {
         this.navCtrl.push(SoundList, {
-            album: album,
+            url: album.targetUrl,
             crawlerId: crawlerId
         });
     }

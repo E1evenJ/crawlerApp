@@ -1,7 +1,4 @@
 page-sound-bar{
-    audio{
-        width: 100%;
-    }
     ion-content{
         .cm-header{
             display: -webkit-flex;
@@ -46,6 +43,13 @@ page-sound-bar{
                     text-overflow: ellipsis;
                     white-space: nowrap;
                 }
+            }
+        }
+    }
+    ion-footer{
+        ion-avatar{
+            img{
+                transition: all ease 0.2s
             }
         }
     }

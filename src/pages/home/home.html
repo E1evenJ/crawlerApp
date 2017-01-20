@@ -28,32 +28,38 @@
 <ion-content cmHasFooter>
     <ion-list>
 
-        <ion-item-group *ngFor="let item of result">
+        <!--<ion-item-group *ngFor="let item of result">-->
 
-            <ion-item-divider sticky>
-                <ion-label>
-                    {{item._id | crawlerId}}
-                </ion-label>
-            </ion-item-divider>
+            <!--<ion-item-divider sticky>-->
+            <!--<ion-label>-->
+            <!--{{item._id | crawlerId}}-->
+            <!--</ion-label>-->
+            <!--</ion-item-divider>-->
 
-            <ion-item-sliding *ngFor="let album of item.albumArray" #slidingItem>
-                <ion-item detail-push *ngIf="album.isAlbum == true && album.soundArray.length>0" (click)="goToSoundList(album, item._id)">
+            <ion-item-sliding *ngFor="let album of albumArray" #slidingItem
+                              [@flyInOut]="'in'">
+                <ion-item detail-push *ngIf="album.isAlbum == true && album.soundCount>0"
+                          (click)="goToSoundList(album, item._id)">
                     <ion-thumbnail item-left>
                         <img src="{{album.picture}}">
                     </ion-thumbnail>
                     <h3><span>[专辑]</span>{{album.name}}</h3>
                     <p>
-                        {{album.date}}&nbsp;·
+                        <!--{{album.date}}&nbsp;·-->
+                        来自[{{album.crawlerId | crawlerId}}]&nbsp;·
                         {{album.playCount}}次播放&nbsp;·
-                        {{album.soundArray.length}}声音
+                        {{album.soundCount}}声音
+
                     </p>
                 </ion-item>
-                <ion-item detail-push *ngIf="album.isAlbum == false" (click)="getSoundTracks(album.soundArray[0], item._id)">
+                <ion-item detail-push *ngIf="album.isAlbum == false"
+                          (click)="getSoundTracks(album)">
                     <ion-thumbnail item-left>
                         <img src="{{album.soundArray[0].picture}}">
                     </ion-thumbnail>
                     <h3>{{album.soundArray[0].title}}</h3>
                     <p>
+                        来自[{{album.crawlerId | crawlerId}}]&nbsp;·
                         {{album.soundArray[0].playCount}}次播放
                     </p>
                 </ion-item>
@@ -68,7 +74,7 @@
                 <!--</ion-item-options>-->
 
             </ion-item-sliding>
-        </ion-item-group>
+        <!--</ion-item-group>-->
     </ion-list>
 
     <ion-fab bottom right #fab>

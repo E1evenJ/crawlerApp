@@ -13,18 +13,27 @@ export class SocketService {
         this.connect()
     }
 
-    connect(){
+    connect() {
         this.client = sailsIOJS(io);
         this.client.sails.reconnection = true;
         this.client.sails.autoConnect = false;
         this.socket = this.client.sails.connect('http://localhost:1337');
     }
 
-    get(url, data, callBack){
+    get(url, data?) {
         const that = this;
-        this.socket.get(url, data, (body: any, jwr: any)=>{
-            callBack(body, jwr);
-            that.chRef.detectChanges();
+        return new Promise((resolve, reject) => {
+            this.socket.get(url, data, (body: any, jwr: any) => {
+                if (jwr.statusCode == 200) {
+                    resolve(body);
+                    that.chRef.detectChanges();
+                } else {
+                    console.error(jwr);
+                    // reject(jwr.message);
+                }
+            });
         });
+
+
     }
 }

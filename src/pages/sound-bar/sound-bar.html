@@ -1,31 +1,36 @@
-<ion-content [hidden]="!isShow" >
+<ion-content [@soundContent]="soundContentState">
     <div class="cm-header">
         <button ion-button clear icon-only (click)="closeSoundBar()">
             <ion-icon name="arrow-down"></ion-icon>
         </button>
         <div class="cm-title">
-            <div>{{soundData.album_title}}</div>
+            <div>{{soundData.title}}</div>
         </div>
     </div>
     <ion-list>
-        <cm-audio [src]="soundData['play_path']" #player></cm-audio>
+        <cm-audio [src]="soundData.play_path" #player></cm-audio>
     </ion-list>
 </ion-content>
 
-<ion-footer [hidden]="isShow" (click)="openSoundBar()">
+<ion-footer [@soundContent]="soundFooterState" (click)="openSoundBar()">
     <ion-toolbar>
         <ion-item no-lines>
             <ion-avatar item-left>
-                <img src="{{soundData['cover_url_142']}}">
+                <img [src]="soundData.cover_url_142"
+                     [@imgRotate]="soundImgState"
+                     (@imgRotate.done)="animationDone($event)">
             </ion-avatar>
+            <!--<ion-avatar item-left [hidden]="!player.paused">-->
+                <!--<img [src]="soundData.cover_url_142">-->
+            <!--</ion-avatar>-->
             <h3 class="text-ellipsis">{{soundData.title}}</h3>
             <p>
                 {{soundData.album_title}}&nbsp;·
                 {{soundData.nickname}}
             </p>
             <button ion-button clear item-right icon-only (click)="play($event, player)">
-                <ion-icon name="play" *ngIf="!isPlay"></ion-icon>
-                <ion-icon name="pause" *ngIf="isPlay"></ion-icon>
+                <ion-icon name="play" *ngIf="player.paused"></ion-icon>
+                <ion-icon name="pause" *ngIf="!player.paused"></ion-icon>
 
             </button>
         </ion-item>

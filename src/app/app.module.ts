@@ -9,6 +9,9 @@ import {SoundBar} from "../pages/sound-bar/sound-bar";
 import {CmHasFooter} from "../directives/has-footer.directive";
 import {CrawlerId} from "../pipes/crawlerId.pipe";
 import {AudioComponent} from "../pages/audio/audio.component";
+import {LocalStorageModule} from 'angular-2-local-storage';
+import {TimeMinSec} from "../pipes/time-minutes-seconds.pipe";
+import {Percentage} from "../pipes/percentage.pipe";
 
 @NgModule({
     declarations: [
@@ -20,10 +23,16 @@ import {AudioComponent} from "../pages/audio/audio.component";
         SoundBar,
         CmHasFooter,
         CrawlerId,
-        AudioComponent
+        AudioComponent,
+        TimeMinSec,
+        Percentage
     ],
     imports: [
-        IonicModule.forRoot(MyApp)
+        IonicModule.forRoot(MyApp),
+        LocalStorageModule.withConfig({
+            prefix: 'my-app',
+            storageType: 'localStorage'
+        })
     ],
     bootstrap: [IonicApp],
     entryComponents: [

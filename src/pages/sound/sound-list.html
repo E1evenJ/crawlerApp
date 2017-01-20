@@ -6,7 +6,8 @@
 
 <ion-content cmHasFooter>
     <ion-list>
-        <ion-item-sliding *ngFor="let sound of album.soundArray" #slidingItem>
+        <ion-item-sliding *ngFor="let sound of album.soundArray" #slidingItem
+            [@flyInOut]="'in'">
             <button ion-item (click)="getSoundTracks(sound)">
                 <ion-thumbnail item-left>
                     <img src="{{sound.picture}}">
@@ -23,4 +24,7 @@
             </button>
         </ion-item-sliding>
     </ion-list>
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)" [enabled]="album.hasNext">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
 </ion-content>
